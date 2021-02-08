@@ -20,9 +20,13 @@ import java.util.List;
 @Service //need to make this a service in order for Spring to run it
 public class CoronaVirusDataService {
 
+    private static String VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+
     private List<LocationStats> allStats= new ArrayList<>();
 
-    private static String VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+    public List<LocationStats> getAllStats() {
+        return allStats;
+    }
 
     @PostConstruct //this tells Spring, when you construct this intance, after it's done, execute this when the app starts
     @Scheduled(cron = "* * 1 * * *") // (sec min hour day m) yschedule the run of a method on a scheduled basis
