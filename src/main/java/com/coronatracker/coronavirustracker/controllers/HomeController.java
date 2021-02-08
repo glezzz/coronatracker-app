@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Controller
@@ -19,8 +20,13 @@ public class HomeController {
     public String home(Model model) {
         List<LocationStats> allStats = coronaVirusDataService.getAllStats();
         int totalReportedCases = allStats.stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
+        int totalNewCases = allStats.stream().mapToInt(stat -> stat.getDiffFromPreviousDay()).sum();
+
+        LocationStats locationStats = new LocationStats();
+
         model.addAttribute("locationStats", allStats);
-        model.addAttribute("totalReportedCases", totalReportedCases);
+        model.addAttribute("totalReportedCases", locationStats.formatNumber(totalReportedCases));
+        model.addAttribute("totalNewCases", locationStats.formatNumber(totalNewCases));
 
         return "home";
     }
